@@ -53,6 +53,19 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.oracle.database.security</groupId>
+            <artifactId>oraclepki</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.oracle.database.security</groupId>
+            <artifactId>osdt_cert</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.oracle.database.security</groupId>
+            <artifactId>osdt_core</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
