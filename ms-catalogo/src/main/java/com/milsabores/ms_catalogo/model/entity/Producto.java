@@ -2,6 +2,7 @@ package com.milsabores.ms_catalogo.model.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.util.List; // Necesario para List<DetalleOferta>
 
 @Entity
 @Table(name = "PRODUCTO")
@@ -13,13 +14,19 @@ public class Producto {
     @Column(name = "ID_PRODUCTO")
     private Long idProducto;
     
-    @ManyToOne //se relaciona con CATEGORIA, muchos productos pertenecen a una categoria
+    @ManyToOne 
     @JoinColumn(name = "ID_CATEGORIA", nullable = false)
     private Categoria categoria;
 
+    // --- NUEVA RELACIÓN DE OFERTAS TEMPORALES (Opción 2) ---
+    // Un Producto puede tener muchos registros en la tabla DETALLE_OFERTA
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<DetalleOferta> detallesOferta; 
+    // --------------------------------------------------------
+
     @Column(name = "CODIGO_SKU")
     private String codigoSku;
-
+    // ... resto de campos (NOMBRE, DESCRIPCION, PRECIO, URL_IMAGEN, STOCK, etc.)
     @Column(name = "NOMBRE", nullable = false)
     private String nombre;
 
