@@ -23,29 +23,29 @@
     </properties>
 
     <dependencies>
-
         <!-- JPA -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
-        <!-- Web MVC (REST) -->
+        <!-- Web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- Para llamar a otros microservicios -->
+        <!-- Webflux (si haces llamadas no bloqueantes, si no, puedes quitarlo) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
 
-        <!-- Driver de Oracle -->
+        <!-- Driver Oracle (versión estable para ADB + TCPS + Wallet) -->
         <dependency>
             <groupId>com.oracle.database.jdbc</groupId>
             <artifactId>ojdbc11</artifactId>
+            <version>21.9.0.0</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -56,13 +56,12 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Tests -->
+        <!-- Testing -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>
