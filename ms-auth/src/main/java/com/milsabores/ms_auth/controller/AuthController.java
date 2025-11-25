@@ -72,4 +72,44 @@ public class AuthController {
         usuarioRepository.save(usuario);
         return ResponseEntity.ok("Usuario registrado con éxito");
     }
+
+    // ACTUALIZAR USUARIO (PUT)
+    @PutMapping("/actualizar")
+    public ResponseEntity<?> actualizarUsuario(@RequestBody Usuario usuarioActualizado) {
+        try {
+            // 1. Buscar al usuario por ID (necesario para saber cuál actualizar)
+            Usuario usuarioExistente = usuarioRepository.findById(usuarioActualizado.getIdUsuario())
+                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+            // 2. Actualizar solo los campos que vienen (si no son nulos)
+            if (usuarioActualizado.getNombreCompleto() != null) {
+                usuarioExistente.setNombreCompleto(usuarioActualizado.getNombreCompleto());
+            }
+            if (usuarioActualizado.getTelefono() != null) {
+                usuarioExistente.setTelefono(usuarioActualizado.getTelefono());
+            }
+            if (usuarioActualizado.getIdRegion() != null) {
+                usuarioExistente.setIdRegion(usuarioActualizado.getIdRegion());
+            }
+            if (usuarioActualizado.getIdComuna() != null) {
+                usuarioExistente.setIdComuna(usuarioActualizado.getIdComuna());
+            }
+            if (usuarioActualizado.getFechaNacimiento() != null) {
+                usuarioExistente.setFechaNacimiento(usuarioActualizado.getFechaNacimiento());
+            }
+
+            // 3. ¿Quiere cambiar contraseña?
+            if (usuarioActualizado.getContrasena() != null && !usuarioActualizado.getContrasena().isEmpty()) {
+                usuarioExistente.setContrasena(passwordEncoder.encode(usuarioActualizado.getContrasena()));
+            }
+
+            // 4. Guardar cambios en Oracle
+            usuarioRepository.save(usuarioExistente);
+
+            return ResponseEntity.ok("Datos actualizados correctamente");
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error al actualizar: " + e.getMessage());
+        }
+    }
 }
