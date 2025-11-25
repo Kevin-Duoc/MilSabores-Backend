@@ -22,18 +22,20 @@ public class PedidoController {
     // WebClient para la comunicación con ms-catalogo
     private final WebClient webClient; 
 
-    // Constructor para inyectar WebClient (Spring lo inyecta automáticamente)
+    // Constructor para inyectar WebClient
     public PedidoController(WebClient.Builder webClientBuilder) {
-        // Configuramos la URL base del microservicio Catálogo (8082)
-        this.webClient = webClientBuilder.baseUrl("http://localhost:8082/api/v1/catalogo")
-                                         .build();
+        // ⚠️ CAMBIO CRÍTICO: Usar la IP de la EC2 de CATÁLOGO, no localhost
+        // IP Elástica de Catálogo: 52.73.124.122
+        this.webClient = webClientBuilder
+                .baseUrl("http://52.73.124.122:8082/api/v1/catalogo") 
+                .build();
     }
 
     // crear pedido (recibe el carrito del React)
     @PostMapping
     public ResponseEntity<?> crearPedido(@RequestBody PedidoDto pedidoDto) {
         try {
-            // 🛑 PASO 1: VERIFICACIÓN Y DESCUENTO DE STOCK EN ms-catalogo (8082)
+            // PASO 1: VERIFICACIÓN Y DESCUENTO DE STOCK EN ms-catalogo (8082)
             for (DetallePedidoDto detalle : pedidoDto.getDetalles()) {
                 
                 // Enviamos la cantidad en NEGATIVO para que el servicio de Catálogo la reste
@@ -46,7 +48,7 @@ public class PedidoController {
                     .block(); // Bloqueamos para asegurar la atomicidad
             }
 
-            // 🛑 PASO 2: Si todos los descuentos de stock fueron exitosos, guardamos el pedido.
+            // PASO 2: Si todos los descuentos de stock fueron exitosos, guardamos el pedido.
             Pedido nuevoPedido = pedidoService.crearPedido(pedidoDto);
             return ResponseEntity.ok("Pedido creado con éxito. ID: " + nuevoPedido.getIdPedido());
 
