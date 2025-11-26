@@ -22,6 +22,10 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 // PERMITIMOS ACCESO TOTAL A LAS RUTAS DE LOGIN Y REGISTRO
                 .requestMatchers("/api/v1/auth/**").permitAll()
+                .requestMatchers("/api/v1/auth/**").permitAll()
+                .requestMatchers("/v3/api-docs/**").permitAll()
+                .requestMatchers("/swagger-ui/**").permitAll()
+                .requestMatchers("/swagger-ui.html").permitAll()
                 // CUALQUIER OTRA RUTA REQUIERE ESTAR LOGUEADO
                 .anyRequest().authenticated()
             );
